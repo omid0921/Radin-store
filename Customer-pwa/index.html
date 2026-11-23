@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#111111"><meta name="description" content="فروشگاه اینترنتی رادین؛ قیمت مناسب، کیفیت مطمئن">
+  <link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css"><title>رادین | فروشگاه آنلاین</title>
+</head>
+<body>
+<header class="topbar"><a class="brand" href="#home"><span class="brand-mark">R</span><span>رادین<small>قیمت مناسب، کیفیت مطمئن</small></span></a><button id="installBtn" class="install hidden">نصب برنامه</button><button id="cartOpen" class="cart-button" aria-label="سبد خرید">سبد خرید <b id="cartCount">۰</b></button></header>
+<main>
+<section id="home" class="hero"><div><span class="eyebrow">خرید آسان و مطمئن</span><h1>خوش آمدید به <em>رادین</em></h1><p>موبایل، لوازم جانبی و تجهیزات دیجیتال</p><a href="#catalog" class="primary-link">مشاهده محصولات</a></div><div class="hero-art"><div class="orbit"></div><div class="phone">R</div><span class="spark s1">✦</span><span class="spark s2">✦</span></div></section>
+<section class="catalog-head" id="catalog"><div><span class="eyebrow">ویترین رادین</span><h2>محصولات فروشگاه</h2></div><div class="status" id="apiStatus">در حال اتصال…</div></section>
+<div class="toolbar"><input id="search" type="search" placeholder="جست‌وجوی نام کالا یا برند…" aria-label="جست‌وجوی محصولات"><select id="categoryFilter" aria-label="فیلتر دسته‌بندی"><option value="">همه دسته‌ها</option></select></div>
+<div id="message" class="message">برای مشاهده کالاها، نشانی سرور فروشگاه باید تنظیم شده باشد.</div>
+<section id="products" class="products" aria-live="polite"></section>
+</main>
+<footer><strong>رادین</strong><span>قیمت مناسب، کیفیت مطمئن</span><small>نسخه آزمایشی ویترین مشتریان</small></footer>
+<div id="cartPanel" class="drawer hidden" role="dialog" aria-modal="true" aria-labelledby="cartTitle"><div class="drawer-head"><h2 id="cartTitle">سبد خرید</h2><button id="cartClose" class="close" aria-label="بستن">×</button></div><div id="cartItems" class="cart-items"></div><div class="cart-foot"><div class="total"><span>جمع تقریبی</span><strong id="cartTotal">۰ تومان</strong></div><form id="checkoutForm" class="checkout-form">
+<label>نام و نام خانوادگی<input name="customerName" required minlength="2" maxlength="120" autocomplete="name" placeholder="نام تحویل‌گیرنده"></label>
+<label>شماره موبایل<input name="mobile" required minlength="8" maxlength="20" inputmode="tel" autocomplete="tel" placeholder="09…"></label>
+<label>شهر<input name="city" required maxlength="100" autocomplete="address-level2" placeholder="مثلاً گرگان"></label>
+<label>نشانی کامل<input name="address" required minlength="8" maxlength="1000" autocomplete="street-address" placeholder="خیابان، کوچه، پلاک، واحد"></label>
+<label>کد پستی (اختیاری)<input name="postalCode" maxlength="20" inputmode="numeric" autocomplete="postal-code"></label>
+<label>توضیحات سفارش (اختیاری)<textarea name="notes" maxlength="1000" rows="2" placeholder="توضیح تکمیلی برای فروشگاه"></textarea></label>
+<button id="submitOrder" class="primary full" type="submit">ثبت درخواست سفارش</button>
+</form>
+<p class="notice">پس از ثبت، سفارش با وضعیت «در انتظار بررسی فروشگاه» ذخیره می‌شود. پرداخت آنلاین در این نسخه فعال نیست و فروشگاه برای هماهنگی نهایی با شما تماس می‌گیرد.</p>
+<div id="checkoutMessage" class="checkout-message" role="status" aria-live="polite"></div></div></div>
+<div id="overlay" class="overlay hidden"></div>
+<script src="config.js"></script><script src="app.js"></script>
+</body></html>
