@@ -1,0 +1,143 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum StaffRole {
+  OWNER
+  SELLER
+  WAREHOUSE
+  ORDER_MANAGER
+}
+
+enum StockMovementType {
+  IN
+  OUT
+  ADJUSTMENT
+}
+
+enum OrderStatus {
+  PENDING_REVIEW
+  CONFIRMED
+  PREPARING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum OrderPaymentStatus {
+  UNPAID
+  PAID
+  REFUNDED
+}
+
+model Customer {
+  id        String   @id @default(cuid())
+  mobile    String   @unique
+  fullName  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  orders    Order[]
+}
+
+model Order {
+  id             String             @id @default(cuid())
+  orderNumber    String             @unique
+  customerId     String
+  customer       Customer           @relation(fields: [customerId], references: [id])
+  customerName   String
+  mobile         String
+  city           String
+  address        String
+  postalCode     String?
+  notes          String?
+  status         OrderStatus        @default(PENDING_REVIEW)
+  paymentStatus  OrderPaymentStatus @default(UNPAID)
+  totalAmount    BigInt
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+  items          OrderItem[]
+  @@index([mobile, createdAt])
+  @@index([status, createdAt])
+}
+
+model OrderItem {
+  id            String   @id @default(cuid())
+  orderId       String
+  order         Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  variantId     String
+  variant       ProductVariant @relation(fields: [variantId], references: [id])
+  productTitle  String
+  variantTitle  String
+  unitPrice     BigInt
+  quantity      Int
+  lineTotal     BigInt
+}
+
+model Staff {
+  id           String    @id @default(cuid())
+  mobile       String    @unique
+  fullName     String
+  passwordHash String
+  role         StaffRole @default(SELLER)
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Category {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  products  Product[]
+}
+
+model Product {
+  id          String           @id @default(cuid())
+  name        String
+  brand       String?
+  description String?
+  categoryId  String?
+  category    Category?        @relation(fields: [categoryId], references: [id])
+  isActive    Boolean          @default(true)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  variants    ProductVariant[]
+}
+
+model ProductVariant {
+  id              String          @id @default(cuid())
+  productId       String
+  product         Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
+  title           String
+  sku             String?         @unique
+  barcode         String?         @unique
+  retailPrice     BigInt          @default(0)
+  wholesalePrice  BigInt          @default(0)
+  purchasePrice   BigInt          @default(0)
+  stockQuantity   Int             @default(0)
+  reservedQuantity Int            @default(0)
+  minimumStock    Int             @default(3)
+  isActive        Boolean         @default(true)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  movements       StockMovement[]
+  orderItems      OrderItem[]
+  @@index([productId, isActive])
+  @@index([stockQuantity, minimumStock])
+}
+
+model StockMovement {
+  id          String            @id @default(cuid())
+  variantId   String
+  variant     ProductVariant    @relation(fields: [variantId], references: [id])
+  type        StockMovementType
+  quantity    Int
+  reason      String
+  createdAt   DateTime          @default(now())
+}
